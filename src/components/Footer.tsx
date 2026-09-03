@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-white p-1 rounded-md">
-              <Image src="/wie-logo.jpg" alt="WiE Logo" width={40} height={40} className="object-contain" />
+              <Image src="/wie-logo.png" alt="WiE Logo" width={40} height={40} className="object-contain" />
             </div>
             <span className="text-xl font-bold tracking-wide">IEEE WiE UET Narowal</span>
           </div>

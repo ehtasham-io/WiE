@@ -36,8 +36,7 @@ export default async function Home() {
       
       {/* === HERO SECTION === */}
       {/* Added a subtle dotted tech-grid pattern to the background */}
-      <section className="relative w-full h-[85vh] flex flex-col items-center justify-center text-center px-6 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]">
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-ieee-blue/20 rounded-full blur-[100px] mix-blend-multiply opacity-70 animate-pulse-slow"></div>
+      <section className="relative w-full min-h-[100svh] md:min-h-[85vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16 md:pt-0 md:pb-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]">   <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-ieee-blue/20 rounded-full blur-[100px] mix-blend-multiply opacity-70 animate-pulse-slow"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-wie-purple/20 rounded-full blur-[100px] mix-blend-multiply opacity-70"></div>
         
         <Reveal>
