@@ -43,6 +43,7 @@ export default function Navbar() {
           <Link href="#about" className="hover:text-wie-purple transition-colors">About Us</Link>
           <Link href="/events" className="hover:text-wie-purple transition-colors">Events</Link>
           <Link href="#team" className="hover:text-wie-purple transition-colors">Our Team</Link>
+          <Link href="/legacy" className="text-gray-600 hover:text-amber-500 font-medium transition-colors">Legacy</Link>
         </div>
 
         {/* Desktop Call to Action & Mobile Toggle */}
