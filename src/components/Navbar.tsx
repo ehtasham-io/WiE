@@ -93,7 +93,7 @@ export default function Navbar() {
           <div className="px-4 pt-2 pb-6 space-y-1 flex flex-col">
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">Home</Link>
             <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">About Us</Link>
-            <Link href="/#events" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">Events</Link>
+            <Link href="/events" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">Events</Link>
             <Link href="/#team" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">Our Team</Link>
             <Link href="/legacy" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-amber-600 hover:bg-amber-50 rounded-md">Legacy</Link>
             <a 
