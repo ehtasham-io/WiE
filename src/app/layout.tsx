@@ -1,3 +1,4 @@
+import SmoothScrolling from "@/components/SmoothScrolling";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar"; 
@@ -44,9 +46,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+        {/* The Smooth Scrolling Engine wraps your entire app */}
+        <SmoothScrolling>
+          <Navbar />
+          {children}
+          <Footer />
+        </SmoothScrolling>
       </body>
     </html>
   );

@@ -1,4 +1,6 @@
 import Image from "next/image";
+import MagneticWrapper from "@/components/MagneticWrapper";
+import TiltWrapper from "@/components/TiltWrapper";
 import { client } from "@/sanity/lib/client";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
@@ -36,34 +38,77 @@ export default async function Home() {
       
       {/* === HERO SECTION === */}
       {/* Added a subtle dotted tech-grid pattern to the background */}
-      <section className="relative w-full min-h-[100svh] md:min-h-[85vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16 md:pt-0 md:pb-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]">   <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-ieee-blue/20 rounded-full blur-[100px] mix-blend-multiply opacity-70 animate-pulse-slow"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-wie-purple/20 rounded-full blur-[100px] mix-blend-multiply opacity-70"></div>
-        
-        <Reveal>
-          <div className="relative z-10 max-w-4xl bg-white/40 backdrop-blur-md p-8 rounded-3xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-            <h2 className="text-wie-purple font-bold tracking-widest uppercase text-sm md:text-base mb-6">
-              IEEE UET Narowal Student Branch
-            </h2>
-            <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
-              Building Leaders <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-ieee-blue to-wie-purple">
-                For Tomorrow
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
-              Empowering women in engineering, fostering innovation, and building a stronger, more inclusive tech community at UET Narowal.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/events" className="px-8 py-3.5 bg-gradient-to-r from-ieee-blue to-blue-700 text-white font-semibold rounded-full hover:shadow-[0_8px_30px_rgba(0,98,155,0.3)] hover:-translate-y-1 transition-all duration-300">
-                Explore Events
-              </Link>
-              <a href="#team" className="px-8 py-3.5 bg-white text-gray-900 font-semibold rounded-full border-2 border-transparent hover:border-gray-200 shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
-                Meet the Team
-              </a>
+      {/* === 100X HERO SECTION === */}
+    <section className="relative w-full min-h-[100svh] md:min-h-[85vh] flex items-center justify-center px-6 pt-32 pb-16 md:pt-0 md:pb-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] overflow-hidden">
+
+      {/* Premium Background Orbs (Kept intact) */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none -z-10 flex justify-center items-center">
+        <div className="absolute top-1/4 left-1/4 w-72 md:w-96 h-72 md:h-96 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-[80px] md:blur-[120px] opacity-70 animate-blob"></div>
+        <div className="absolute top-1/3 right-1/4 w-72 md:w-96 h-72 md:h-96 bg-amber-400/30 rounded-full mix-blend-multiply filter blur-[80px] md:blur-[120px] opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-1/3 w-72 md:w-96 h-72 md:h-96 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-[80px] md:blur-[120px] opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* ASYMMETRICAL GRID LAYOUT */}
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+
+        {/* LEFT SIDE: Typography */}
+        <div className="flex flex-col items-start text-left space-y-6">
+          <h2 className="text-purple-600 font-bold tracking-[0.2em] uppercase text-sm md:text-xs">
+          </h2>
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 tracking-tighter leading-[1.05]">
+            Building <br />
+            Leaders <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
+              For Tomorrow
+            </span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-md leading-relaxed">
+            Empowering women in engineering, fostering innovation, and building a stronger, more inclusive tech community.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 pt-4">
+            <MagneticWrapper>
+  <Link 
+    href="#events" 
+    className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-full shadow-[0_10px_40px_rgba(147,51,234,0.3)] hover:shadow-[0_10px_40px_rgba(147,51,234,0.6)] transition-all duration-300 block"
+  >
+    Explore Events
+  </Link>
+</MagneticWrapper>
+            <Link 
+              href="#team" 
+              className="px-8 py-4 bg-white/70 backdrop-blur-md text-gray-900 font-bold rounded-full border border-gray-200 shadow-sm hover:shadow-lg hover:border-purple-300 hover:-translate-y-1 transition-all duration-300"
+            >
+              Meet the Team
+            </Link>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE: Floating Glass Composition */}
+        <div className="relative w-full h-[500px] hidden lg:block">
+          
+          {/* Back Glass Card */}
+          <div className="absolute top-10 right-0 w-72 h-80 bg-white/30 backdrop-blur-xl border border-white/50 rounded-[2rem] shadow-2xl animate-blob animation-delay-2000 flex flex-col justify-end p-6 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-orange-500/5 -z-10"></div>
+            {/* UI Placeholder elements to look like an app */}
+            <div className="w-12 h-12 rounded-full bg-white/60 mb-4 shadow-sm"></div>
+            <div className="w-3/4 h-4 rounded-full bg-white/70 mb-2 shadow-sm"></div>
+            <div className="w-1/2 h-4 rounded-full bg-white/50 shadow-sm"></div>
+          </div>
+
+          {/* Front Glass Card */}
+          <div className="absolute bottom-10 left-10 w-80 h-64 bg-white/60 backdrop-blur-2xl border border-white/80 rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-blob flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/10 to-pink-500/10 -z-10"></div>
+            <div className="text-center">
+               <span className="text-6xl block mb-4 drop-shadow-md">🚀</span>
+               <h3 className="font-bold text-gray-800 text-2xl tracking-tight">Innovation First</h3>
             </div>
           </div>
-        </Reveal>
-      </section>
+          
+        </div>
+
+      </div>
+    </section>
 
       {/* === ABOUT US SECTION === */}
       <section id="about" className="py-24 px-6 relative z-10">
@@ -112,6 +157,77 @@ export default async function Home() {
           </Reveal>
         </div>
       </section>
+
+      {/* === 100X BENTO BOX ABOUT SECTION === */}
+    <section id="about" className="py-32 relative w-full px-6 overflow-hidden">
+      
+      {/* Background ambient light */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Section Header */}
+        <div className="mb-16 md:pl-4">
+          <h2 className="text-purple-600 font-bold tracking-widest uppercase text-sm mb-3">Who We Are</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
+            Redefining <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-400">Engineering.</span>
+          </h3>
+        </div>
+
+        {/* BENTO GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
+          
+          {/* Box 1: The Mission (Spans 2 Columns) */}
+          <div className="md:col-span-2 bg-white/70 backdrop-blur-xl border border-white/80 rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(147,51,234,0.12)] transition-all duration-500 flex flex-col justify-center relative overflow-hidden group">
+            <div className="absolute -right-20 -top-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all duration-700"></div>
+            <h4 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Our Mission</h4>
+            <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
+              To inspire, engage, and empower students in engineering and technology at UET Narowal. We break barriers and build leaders through hands-on workshops, mentorship, and a relentless drive for innovation.
+            </p>
+          </div>
+
+          {/* Box 2: High Impact Stat (Gradient Block) */}
+          <div className="bg-gradient-to-br from-purple-700 to-pink-500 rounded-[2.5rem] p-10 shadow-xl flex flex-col justify-center items-center text-center relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+            {/* Subtle inner glow */}
+            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <span className="text-7xl font-extrabold text-white tracking-tighter mb-2">10+</span>
+            <span className="text-purple-100 font-semibold text-sm uppercase tracking-widest">Events Hosted</span>
+          </div>
+
+          {/* Box 3: Community Stat (Glassmorphism) */}
+          <div className="bg-white/70 backdrop-blur-xl border border-white/80 rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(245,158,11,0.12)] transition-all duration-500 flex flex-col justify-center items-center text-center group">
+            <span className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-amber-400 to-orange-500 tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500">100+</span>
+            <span className="text-gray-600 font-semibold text-sm uppercase tracking-widest">Active Members</span>
+          </div>
+
+          {/* Box 4: Dark Mode Call to Action (Spans 2 Columns) */}
+          <div className="md:col-span-2 bg-[#0F172A] rounded-[2.5rem] p-10 shadow-2xl overflow-hidden relative flex flex-col md:flex-row items-center justify-between group">
+            <div className="absolute -left-20 -bottom-20 w-72 h-72 bg-purple-600/30 rounded-full blur-[80px] group-hover:bg-pink-600/30 transition-all duration-700"></div>
+            
+            <div className="relative z-10 md:w-2/3 text-center md:text-left mb-8 md:mb-0">
+              <h4 className="text-3xl font-bold text-white mb-4 tracking-tight">Join the Movement</h4>
+              <p className="text-gray-400 text-lg mb-8 max-w-md">
+                Whether you are a coder, a hardware enthusiast, or a future CEO, there is a place for you to grow here.
+              </p>
+              <a 
+  href="https://chat.whatsapp.com/FFMEfVNZrzYLqxesDVWX1V" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  className="px-8 py-3.5 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-200 transition-colors inline-block"
+>
+  Become a Member
+</a>
+            </div>
+            
+            {/* Floating Graphic Element */}
+            <div className="relative z-10 w-32 h-32 flex items-center justify-center animate-blob">
+               <span className="text-8xl drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">✨</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
       {/* === RECENT HIGHLIGHTS SECTION (Events) === */}
       <section id="events" className="py-24 px-6 relative">

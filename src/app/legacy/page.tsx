@@ -1,76 +1,114 @@
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
-import Reveal from "@/components/Reveal";
 
-export const revalidate = 10;
-
-export default async function LegacyPage() {
-  const legends = await client.fetch(`*[_type == "legacyMember"] | order(order asc) {
+const getLegacyMembers = async () => {
+  // 1. Updated the query to ask for 'achievements' instead of 'description'
+  const query = `*[_type == "legacyMember"] | order(order asc) {
     _id,
     name,
     role,
     tenure,
     achievements,
     "imageUrl": image.asset->url
-  }`);
+  }`;
+  
+  return await client.fetch(query, {}, { next: { revalidate: 60 } });
+};
+
+export default async function LegacyPage() {
+  const members = await getLegacyMembers();
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-32 pb-24 px-6 selection:bg-wie-purple selection:text-white overflow-hidden relative">
+    <main className="min-h-screen bg-[#FAFAFA] bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] relative overflow-hidden pt-32 pb-24">
       
-      {/* Premium Background Effects */}
-      <div className="absolute top-[-10%] left-1/4 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[120px] mix-blend-multiply opacity-50 pointer-events-none"></div>
-      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-wie-purple/10 rounded-full blur-[120px] mix-blend-multiply opacity-50 pointer-events-none"></div>
+      {/* Ambient Museum Lighting */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-amber-500/10 rounded-[100%] blur-[120px] pointer-events-none -z-10"></div>
+      
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        {/* Cinematic Header */}
+        <div className="text-center max-w-3xl mx-auto mb-32">
+          <h2 className="text-amber-500 font-bold tracking-[0.3em] uppercase text-xs mb-4">Hall of Fame</h2>
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 tracking-tighter mb-6 leading-tight">
+            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-400">Legacy.</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+            Honoring the visionaries who paved the way for women in engineering at UET Narowal.
+          </p>
+        </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <Reveal>
-          <div className="text-center mb-20 space-y-4">
-            <h2 className="text-wie-purple font-bold tracking-widest uppercase text-sm md:text-base">Our Heritage</h2>
-            <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight">
-              Founders & <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-400">Legends</span>
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Honoring the visionaries and exceptional leaders who laid the foundation for the IEEE WiE UET Narowal chapter.</p>
-          </div>
-        </Reveal>
-
-        {legends.length === 0 ? (
-          <p className="text-center text-gray-500">Legacy members will be added soon.</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {/* @ts-ignore */}
-            {legends.map((legend: any, index: number) => (
-              <Reveal key={legend._id} delay={index * 0.15}>
-                <div className="bg-white/80 backdrop-blur-xl rounded-[2rem] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-8 hover:-translate-y-2 transition-all duration-500 hover:shadow-[0_20px_40px_rgba(245,158,11,0.15)] group h-full flex flex-col">
-                  
-                  <div className="flex items-center gap-6 mb-6">
-                    <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-md ring-4 ring-amber-500/20 group-hover:ring-amber-500/50 transition-all">
-                      {legend.imageUrl ? (
-                        <Image src={legend.imageUrl} alt={legend.name} fill className="object-cover" sizes="96px" />
-                      ) : (
-                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                          <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors">{legend.name}</h3>
-                      <p className="text-wie-purple font-semibold">{legend.role}</p>
-                      {legend.tenure && (
-                        <span className="inline-block mt-1 text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full uppercase tracking-wider">{legend.tenure}</span>
-                      )}
-                    </div>
+        {/* ALTERNATING SCROLL SECTIONS */}
+        <div className="flex flex-col gap-32 md:gap-48">
+          
+          {members.length > 0 ? (
+            members.map((member: any, index: number) => (
+              <div 
+                key={member._id} 
+                className={`flex flex-col gap-12 lg:gap-24 items-center ${
+                  index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                }`} 
+              >
+                
+                {/* HUGE IMAGE SIDE */}
+                <div className="w-full lg:w-1/2 group relative">
+                  <div className="relative w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 border border-gray-200/50">
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 z-10"></div>
+                    
+                    {member.imageUrl ? (
+                      <img 
+                        src={member.imageUrl} 
+                        alt={member.name} 
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-in-out"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <span className="text-gray-400 font-bold uppercase tracking-widest">No Image</span>
+                      </div>
+                    )}
                   </div>
-
-                  {legend.achievements && (
-                    <div className="mt-auto pt-6 border-t border-gray-100">
-                      <p className="text-gray-600 leading-relaxed italic">"{legend.achievements}"</p>
-                    </div>
-                  )}
-
+                  
+                  {/* Decorative Background Blob behind the image */}
+                  <div className={`absolute -inset-10 -z-10 rounded-full blur-[100px] opacity-40 ${
+                    index % 2 === 0 ? "bg-amber-400" : "bg-purple-500"
+                  }`}></div>
                 </div>
-              </Reveal>
-            ))}
-          </div>
-        )}
+
+                {/* HUGE TYPOGRAPHY SIDE */}
+                <div className="w-full lg:w-1/2 flex flex-col justify-center text-left relative">
+                  
+                  {/* The Massive Decorative Quotation Mark to fill empty space */}
+                  <span className="absolute -top-16 -left-8 text-[180px] text-gray-200/60 font-serif leading-none -z-10 select-none">
+                    "
+                  </span>
+
+                  <div className="inline-flex items-center gap-4 mb-6 z-10">
+                    <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 font-bold text-sm tracking-wider uppercase shadow-sm">
+                      {member.role}
+                    </span>
+                    <span className="text-amber-500 font-bold tracking-widest text-sm uppercase">
+                      {member.tenure}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tighter mb-8 leading-none z-10 drop-shadow-sm">
+                    {member.name}
+                  </h3>
+                  
+                  {/* 2. Updated this line to render member.achievements */}
+                  <p className="text-xl md:text-2xl text-gray-600 leading-relaxed font-light z-10">
+                    {member.achievements}
+                  </p>
+                </div>
+
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-gray-500 font-semibold tracking-widest uppercase">No legacy members found.</p>
+            </div>
+          )}
+
+        </div>
       </div>
     </main>
   );
