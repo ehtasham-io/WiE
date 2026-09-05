@@ -1,10 +1,11 @@
 import { type SchemaTypeDefinition } from 'sanity'
 import { teamMember } from './schemaTypes/teamMember'
 import { event } from './schemaTypes/event'
-// 1. Import the new schema
 import { siteSettings } from './schemaTypes/siteSettings'
+// Import our new legacy schema (Notice it has no curly braces because we used a default export)
+import legacyMember from './schemaTypes/legacyMember'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  // 2. Add it to the array
-  types: [teamMember, event, siteSettings], 
+  // Add legacyMember to the end of your existing list
+  types: [teamMember, event, siteSettings, legacyMember], 
 }
