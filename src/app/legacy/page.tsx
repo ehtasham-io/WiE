@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
+import type { LegacyMember } from "@/sanity/types";
 
-const getLegacyMembers = async () => {
+const getLegacyMembers = async (): Promise<LegacyMember[]> => {
   // 1. Updated the query to ask for 'achievements' instead of 'description'
   const query = `*[_type == "legacyMember"] | order(order asc) {
     _id,
@@ -12,7 +13,7 @@ const getLegacyMembers = async () => {
     "imageUrl": image.asset->url
   }`;
   
-  return await client.fetch(query, {}, { next: { revalidate: 60 } });
+  return await client.fetch<LegacyMember[]>(query, {}, { next: { revalidate: 60 } });
 };
 
 export default async function LegacyPage() {
@@ -41,7 +42,7 @@ export default async function LegacyPage() {
         <div className="flex flex-col gap-32 md:gap-48">
           
           {members.length > 0 ? (
-            members.map((member: any, index: number) => (
+            members.map((member, index) => (
               <div 
                 key={member._id} 
                 className={`flex flex-col gap-12 lg:gap-24 items-center ${
@@ -55,10 +56,12 @@ export default async function LegacyPage() {
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 z-10"></div>
                     
                     {member.imageUrl ? (
-                      <img 
+                      <Image 
                         src={member.imageUrl} 
                         alt={member.name} 
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-in-out"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-in-out"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">

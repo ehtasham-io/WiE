@@ -13,6 +13,9 @@ import {apiVersion, dataset, projectId} from './src/sanity/env'
 import {schema} from './src/sanity/schema'
 import {structure} from './src/sanity/structure'
 
+// Keep in sync with `singletonTypes` in ./src/sanity/structure.ts
+const singletonTypes = new Set(['siteSettings'])
+
 export default defineConfig({
   basePath: '/studio',
   projectId,
@@ -25,4 +28,16 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({defaultApiVersion: apiVersion}),
   ],
+  document: {
+    // Hide singleton types from the global "+ Create" menu so nobody can
+    // accidentally spawn a second Site Settings document.
+    newDocumentOptions: (prev, {creationContext}) => {
+      if (creationContext.type === 'global') {
+        return prev.filter(
+          (templateItem) => !singletonTypes.has(templateItem.templateId)
+        )
+      }
+      return prev
+    },
+  },
 })

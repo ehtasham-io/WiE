@@ -1,12 +1,14 @@
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { PortableText } from "@portabletext/react";
+import { formatEventDate } from "@/lib/formatDate";
+import type { EventItem } from "@/sanity/types";
 
-export const revalidate = 10; 
+export const revalidate = 60; // was 10 — matches /legacy's cadence, no reason to hit Sanity's CDN this often
 
 export default async function EventsPage() {
   // Fetch ALL events (No limit applied here)
-  const events = await client.fetch(`*[_type == "event"] | order(date desc) {
+  const events = await client.fetch<EventItem[]>(`*[_type == "event"] | order(date desc) {
     _id,
     title,
     date,
@@ -33,8 +35,7 @@ export default async function EventsPage() {
           <p className="text-center text-gray-500">More events coming soon!</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* @ts-ignore */}
-            {events.map((event: any) => (
+            {events.map((event) => (
               <div key={event._id} id={event._id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
                 <div className="aspect-[4/5] bg-gray-200 relative overflow-hidden flex items-center justify-center text-gray-400">
                   {event.imageUrl ? (
@@ -47,7 +48,7 @@ export default async function EventsPage() {
                   </div>
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
-                  <span className="text-sm text-wie-purple font-semibold">{event.date || 'TBA'}</span>
+                  <span className="text-sm text-wie-purple font-semibold">{formatEventDate(event.date)}</span>
                   <h3 className="text-xl font-bold text-gray-900 mt-2 mb-3 tracking-tight">{event.title}</h3>
                   
                   {/* Updated PortableText Renderer */}

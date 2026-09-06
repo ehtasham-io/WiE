@@ -1,6 +1,6 @@
 "use client"; // This tells Next.js this specific component runs in the browser
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
 
 interface RevealProps {
@@ -9,6 +9,14 @@ interface RevealProps {
 }
 
 export default function Reveal({ children, delay = 0 }: RevealProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Someone with "reduce motion" on gets the content immediately, in place
+  // — no slide/fade, no viewport-triggered animation work at all.
+  if (shouldReduceMotion) {
+    return <>{children}</>;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }} // Starts invisible and 40px pushed down

@@ -5,7 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
-export default function Navbar() {
+interface NavbarProps {
+  whatsappLink: string | null;
+}
+
+export default function Navbar({ whatsappLink }: NavbarProps) {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -57,16 +61,18 @@ export default function Navbar() {
           </div>
 
           {/* JOIN BUTTON */}
-          <div className="hidden md:block">
-            <a 
-  href="https://chat.whatsapp.com/FFMEfVNZrzYLqxesDVWX1V" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  className="px-6 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
->
-  Join Chapter
-</a>
-          </div>
+          {whatsappLink && (
+            <div className="hidden md:block">
+              <a 
+    href={whatsappLink} 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="px-6 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+  >
+    Join Chapter
+  </a>
+            </div>
+          )}
 
           {/* MOBILE MENU BUTTON */}
           <div className="md:hidden flex items-center">
@@ -96,15 +102,17 @@ export default function Navbar() {
             <Link href="/events" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">Events</Link>
             <Link href="/#team" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md">Our Team</Link>
             <Link href="/legacy" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-amber-600 hover:bg-amber-50 rounded-md">Legacy</Link>
-            <a 
-  href="https://chat.whatsapp.com/FFMEfVNZrzYLqxesDVWX1V" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  onClick={() => setIsMobileMenuOpen(false)} 
-  className="mt-4 block text-center px-4 py-3 border border-transparent text-base font-bold rounded-full text-white bg-purple-700 hover:bg-purple-800"
->
-  Join Chapter
-</a>
+            {whatsappLink && (
+              <a 
+    href={whatsappLink} 
+    target="_blank" 
+    rel="noopener noreferrer"
+    onClick={() => setIsMobileMenuOpen(false)} 
+    className="mt-4 block text-center px-4 py-3 border border-transparent text-base font-bold rounded-full text-white bg-purple-700 hover:bg-purple-800"
+  >
+    Join Chapter
+  </a>
+            )}
           </div>
         </div>
       )}

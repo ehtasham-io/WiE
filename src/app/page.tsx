@@ -1,17 +1,21 @@
 import Image from "next/image";
 import MagneticWrapper from "@/components/MagneticWrapper";
 import TiltWrapper from "@/components/TiltWrapper";
+// TiltWrapper wraps the "Innovation First" glass card below for a subtle
+// 3D tilt-on-hover effect (desktop only, matches the hero's interactive feel).
 import { client } from "@/sanity/lib/client";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import { formatEventDate } from "@/lib/formatDate";
+import type { TeamMember, EventItem, SiteSettings } from "@/sanity/types";
 
-export const revalidate = 10; 
+export const revalidate = 60; // was 10 — no reason to re-check Sanity's CDN every 10s for content that changes maybe weekly
 
 export default async function Home() {
   
   // 1. Fetch Real Team Data from Sanity
-  const team = await client.fetch(`*[_type == "teamMember"] | order(order asc) {
+  const team = await client.fetch<TeamMember[]>(`*[_type == "teamMember"] | order(order asc) {
     _id,
     name,
     role,
@@ -19,7 +23,7 @@ export default async function Home() {
   }`);
 
   // 2. Fetch Real Event Data (Limited to Latest 3)
-  const events = await client.fetch(`*[_type == "event"] | order(date desc)[0...3] {
+  const events = await client.fetch<EventItem[]>(`*[_type == "event"] | order(date desc)[0...3] {
     _id,
     title,
     date,
@@ -28,10 +32,16 @@ export default async function Home() {
     "imageUrl": image.asset->url
   }`);
 
-  // 3. Fetch Site Settings (Group Photo)
-  const settings = await client.fetch(`*[_type == "siteSettings"][0] {
-    "groupPhotoUrl": groupPhoto.asset->url
+  // 3. Fetch Site Settings (Group Photo, WhatsApp link, homepage stats)
+  const settings = await client.fetch<Partial<SiteSettings> | null>(`*[_type == "siteSettings"][0] {
+    "groupPhotoUrl": groupPhoto.asset->url,
+    whatsappLink,
+    eventsHostedStat,
+    activeMembersStat
   }`);
+  const whatsappLink = settings?.whatsappLink ?? "https://chat.whatsapp.com/FFMEfVNZrzYLqxesDVWX1V";
+  const eventsHostedStat = settings?.eventsHostedStat ?? "10+";
+  const activeMembersStat = settings?.activeMembersStat ?? "100+";
 
   return (
     <main className="min-h-screen bg-white flex-grow selection:bg-wie-purple selection:text-white overflow-hidden">
@@ -97,13 +107,15 @@ export default async function Home() {
           </div>
 
           {/* Front Glass Card */}
-          <div className="absolute bottom-10 left-10 w-80 h-64 bg-white/60 backdrop-blur-2xl border border-white/80 rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-blob flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/10 to-pink-500/10 -z-10"></div>
-            <div className="text-center">
-               <span className="text-6xl block mb-4 drop-shadow-md">🚀</span>
-               <h3 className="font-bold text-gray-800 text-2xl tracking-tight">Innovation First</h3>
+          <TiltWrapper>
+            <div className="absolute bottom-10 left-10 w-80 h-64 bg-white/60 backdrop-blur-2xl border border-white/80 rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-blob flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/10 to-pink-500/10 -z-10"></div>
+              <div className="text-center">
+                 <span className="text-6xl block mb-4 drop-shadow-md">🚀</span>
+                 <h3 className="font-bold text-gray-800 text-2xl tracking-tight">Innovation First</h3>
+              </div>
             </div>
-          </div>
+          </TiltWrapper>
           
         </div>
 
@@ -159,7 +171,7 @@ export default async function Home() {
       </section>
 
       {/* === 100X BENTO BOX ABOUT SECTION === */}
-    <section id="about" className="py-32 relative w-full px-6 overflow-hidden">
+    <section id="mission" className="py-32 relative w-full px-6 overflow-hidden">
       
       {/* Background ambient light */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
@@ -190,13 +202,13 @@ export default async function Home() {
           <div className="bg-gradient-to-br from-purple-700 to-pink-500 rounded-[2.5rem] p-10 shadow-xl flex flex-col justify-center items-center text-center relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
             {/* Subtle inner glow */}
             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <span className="text-7xl font-extrabold text-white tracking-tighter mb-2">10+</span>
+            <span className="text-7xl font-extrabold text-white tracking-tighter mb-2">{eventsHostedStat}</span>
             <span className="text-purple-100 font-semibold text-sm uppercase tracking-widest">Events Hosted</span>
           </div>
 
           {/* Box 3: Community Stat (Glassmorphism) */}
           <div className="bg-white/70 backdrop-blur-xl border border-white/80 rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(245,158,11,0.12)] transition-all duration-500 flex flex-col justify-center items-center text-center group">
-            <span className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-amber-400 to-orange-500 tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500">100+</span>
+            <span className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-amber-400 to-orange-500 tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500">{activeMembersStat}</span>
             <span className="text-gray-600 font-semibold text-sm uppercase tracking-widest">Active Members</span>
           </div>
 
@@ -210,7 +222,7 @@ export default async function Home() {
                 Whether you are a coder, a hardware enthusiast, or a future CEO, there is a place for you to grow here.
               </p>
               <a 
-  href="https://chat.whatsapp.com/FFMEfVNZrzYLqxesDVWX1V" 
+  href={whatsappLink} 
   target="_blank" 
   rel="noopener noreferrer"
   className="px-8 py-3.5 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-200 transition-colors inline-block"
@@ -245,8 +257,7 @@ export default async function Home() {
             <p className="text-center text-gray-500">More events coming soon!</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* @ts-ignore */}
-              {events.map((event: any, index: number) => (
+              {events.map((event, index) => (
                 <Reveal key={event._id} delay={index * 0.15}>
                   <Link 
                     href={`/events#${event._id}`} 
@@ -261,7 +272,7 @@ export default async function Home() {
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-ieee-blue shadow-sm">{event.category || 'Event'}</div>
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
-                      <span className="text-sm text-wie-purple font-bold tracking-wide uppercase">{event.date || 'TBA'}</span>
+                      <span className="text-sm text-wie-purple font-bold tracking-wide uppercase">{formatEventDate(event.date)}</span>
                       <h3 className="text-xl font-bold text-gray-900 mt-2 mb-3 tracking-tight group-hover:text-ieee-blue transition-colors">{event.title}</h3>
                       
                       <div className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
@@ -317,8 +328,7 @@ export default async function Home() {
             <p className="text-center text-gray-500">Team members will be announced soon.</p>
           ) : (
             <div className="flex flex-wrap justify-center gap-x-10 gap-y-14">
-              {/* @ts-ignore */}
-              {team.map((member: any, index: number) => (
+              {team.map((member, index) => (
                 <Reveal key={member._id} delay={index * 0.1}>
                   <div className="flex flex-col items-center text-center w-36 md:w-44 group cursor-pointer">
                     

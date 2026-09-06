@@ -34,3 +34,16 @@ html {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+/* Respect the OS/browser "reduce motion" accessibility setting: kill the
+   infinite blob animation and instant-jump anchor scrolling instead of
+   forcing it on everyone regardless of their preference. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-blob {
+    animation: none;
+  }
+}

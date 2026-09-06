@@ -13,8 +13,12 @@ export const event = defineType({
     }),
     defineField({
       name: 'date',
-      title: 'Date (e.g., October 12, 2024)',
-      type: 'string',
+      title: 'Event Date',
+      type: 'date',
+      options: {
+        dateFormat: 'MMMM D, YYYY',
+      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
